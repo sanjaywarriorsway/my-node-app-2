@@ -15,30 +15,30 @@ jobs:
         node-version: [14, 16, 18]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: npm test
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm test
 
   deploy:
     needs: build
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up git configuration
-      run: |
-        git config --global user.email "warriorswayhub@gmail.com"
-        git config --global user.name "sanjaywarriorsway"
-    - name: Deploy to Heroku
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        HEROKU_APP_NAME: devops-my-node-app-2  # Ensure this is the correct app name
-      run: |
-        echo "machine api.heroku.com login ${{ secrets.HEROKU_EMAIL }} password ${{ secrets.HEROKU_API_KEY }}" > ~/.netrc
-        echo "machine git.heroku.com login ${{ secrets.HEROKU_EMAIL }} password ${{ secrets.HEROKU_API_KEY }}" >> ~/.netrc
-        git remote add heroku https://git.heroku.com/${{ env.HEROKU_APP_NAME }}.git
-        git pull heroku main --rebase
-        git push heroku main
+      - uses: actions/checkout@v2
+      - name: Set up git configuration
+        run: |
+          git config --global user.email "warriorswayhub@gmail.com"
+          git config --global user.name "sanjaywarriorsway"
+      - name: Deploy to Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP_NAME: devops-my-node-app-2 # Ensure this is the correct app name
+        run: |
+          echo "machine api.heroku.com login ${{ secrets.HEROKU_EMAIL }} password ${{ secrets.HEROKU_API_KEY }}" > ~/.netrc
+          echo "machine git.heroku.com login ${{ secrets.HEROKU_EMAIL }} password ${{ secrets.HEROKU_API_KEY }}" >> ~/.netrc
+          git remote add heroku https://git.heroku.com/${{ env.HEROKU_APP_NAME }}.git
+          git pull heroku main --rebase
+          git push heroku main
