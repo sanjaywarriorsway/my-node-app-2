@@ -3,7 +3,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.send('Hello, WarriorsWay Community !');
+  res.send('Hello, WarriorsWay Community ! Welcome to Full Stack web dev. Series');
 });
 
 app.listen(PORT, () => {
